@@ -11,6 +11,7 @@ class GitRepository:
 
     def __init__(self, repo_name: str):
         self.repo_url = f'{setting.GITHUB_BASE_CLONE_URL}/{repo_name}.git'
+        self.repo_full_name = repo_name
         self.repo_name = repo_name.split("/")[-1]
         self.repo_path = Path("../repository/" + self.repo_name)
         self.repo_url_with_token = self.repo_url.replace("https://", f"https://{setting.GITHUB_TOKEN}@")

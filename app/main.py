@@ -1,6 +1,7 @@
 import argparse
 import sys
 
+from app.github import detail
 from app.github.client import GitRepository
 from app.readme import genetare
 
@@ -20,7 +21,11 @@ def main():
 
     new_readme = genetare.full_readme(repo.repo_path)
     repo.write_file('README.md', new_readme)
-    repo.commit_and_push('New readme generated')
+    commit = repo.commit_and_push('New readme generated')
+    print(f'README.md updated: {commit}')
+
+    result = detail.update_repo_metadata(repo)
+    print(f'Repository updated: {result}')
 
 
 if __name__ == "__main__":
