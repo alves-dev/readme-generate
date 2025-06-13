@@ -1,7 +1,7 @@
 import argparse
-import sys
 
 from app.github import detail
+from app.github import license
 from app.github.client import GitRepository
 from app.readme import genetare
 
@@ -21,13 +21,16 @@ def main():
 
     new_readme = genetare.full_readme(repo.repo_path)
     repo.write_file('README.md', new_readme)
-    commit = repo.commit_and_push('New readme generated')
-    print(f'README.md updated: {commit}')
 
     result = detail.update_repo_metadata(repo)
     print(f'Repository updated: {result}')
 
+    license_ok = license.update_license(repo)
+    print(f'LICENSE updated: {license_ok}')
+
+    commit = repo.commit_and_push('New readme generated')
+    print(f'README.md updated: {commit}')
+
 
 if __name__ == "__main__":
-    sys.argv = ["main.py", "alves-dev/posts"]
     main()

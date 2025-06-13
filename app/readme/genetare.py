@@ -4,8 +4,9 @@ from string import Template
 
 import yaml
 
-BASE_PATH_TEMPLATES = '../templates'
+BASE_PATH_TEMPLATES = str(Path(__file__).parent.parent.parent.resolve()) + '/templates'
 FOLDER_DOCS = '.docs'
+
 
 def check_files(path: Path) -> bool:
     """
