@@ -1,0 +1,9 @@
+.venv
+.dockerignore
+.env
+.gitignore
+Dockerfile
+LICENSE
+README.md
+run.sh
+uv.lock
