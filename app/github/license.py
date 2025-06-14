@@ -11,12 +11,12 @@ GITHUB_API = 'https://api.github.com'
 def update_license(repo: GitRepository) -> bool:
     data = _load_metadata(repo.repo_path)
     license_key = data['project']['license']
-    key = _get_standard_license(license_key)
+    license_text = _get_standard_license(license_key)
 
-    if license is None:
+    if license_text is None:
         return False
 
-    repo.write_file('LICENSE', key)
+    repo.write_file('LICENSE', license_text)
 
     return True
 
@@ -28,6 +28,9 @@ def _get_standard_license(license_key: str) -> str | None:
     :param license_key: ID da licença (ex: 'mit', 'gpl-3.0', 'apache-2.0')
     :return: Texto da licença ou None se não encontrar
     """
+
+    if license_key == 'NOT-LICENSE':
+        return None
 
     my_keys = {
         'MIT': 'mit',
