@@ -7,6 +7,7 @@ on:
 
 jobs:
   create-pr:
+    if: github.actor != 'readme-generate'
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +22,12 @@ jobs:
       - name: Set Branch Name
         run: echo "BRANCH_NAME=review/auto-pr-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
 
+      - name: Make dummy commit
+        run: |
+          echo "Trigger PR at $(date)" > .pr-trigger
+          git add .pr-trigger
+          git commit -m "chore: trigger PR automático"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
@@ -29,5 +36,7 @@ jobs:
           title: "🔍 PR Automático - ${{ env.BRANCH_NAME }}"
           body: |
             Este PR foi criado automaticamente após push na main.
-            Branch gerada: `${{ env.BRANCH_NAME }}`.
+            Branch gerada: `${{ env.BRANCH_NAME}`.
+
+            ⚠️ Este PR contém um commit dummy (.pr-trigger) apenas para viabilizar a criação. Pode ser ignorado.
           delete-branch: true
