@@ -36,7 +36,7 @@ jobs:
           title: "🔍 PR Automático - ${{ env.BRANCH_NAME }}"
           body: |
             Este PR foi criado automaticamente após push na main.
-            Branch gerada: `${{ env.BRANCH_NAME}`.
+            Branch gerada: `${{ env.BRANCH_NAME }}`.
 
             ⚠️ Este PR contém um commit dummy (.pr-trigger) apenas para viabilizar a criação. Pode ser ignorado.
           delete-branch: true
