@@ -20,7 +20,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Set Branch Name
-        run: echo "BRANCH_NAME=review/auto-pr-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        run: |
+          BRANCH_NAME=review/auto-pr-$(TZ=America/Sao_Paulo date +'%Y%m%d-%H%M%S')
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Make dummy commit
         run: |
