@@ -155,7 +155,7 @@ jobs:
 
           echo "Prompt montado: $PROMPT"
 
-          RESPONSE=$(curl -s "https://genai-inference-app.stackspot.com/v1/agent/${{ secrets.STACKSPOT_AGENT }}/chat" \
+          RESPONSE=$(curl -sS -f "https://genai-inference-app.stackspot.com/v1/agent/${{ secrets.STACKSPOT_AGENT }}/chat" \
             -H 'Content-Type: application/json' \
             -H "Authorization: Bearer ${{ steps.get_token.outputs.token }}" \
             --data "{
