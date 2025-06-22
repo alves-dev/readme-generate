@@ -173,7 +173,10 @@ jobs:
             exit 0
           fi
           
-          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$MESSAGE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
 
       - name: Comment on PR
         uses: peter-evans/create-or-update-comment@v4
