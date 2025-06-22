@@ -180,7 +180,8 @@ jobs:
       - name: Format Comment
         id: format_comment
         run: |
-          MESSAGE=${{ steps.ai_agent.outputs.message }}
+          MESSAGE_RAW='${{ steps.ai_agent.outputs.message }}'
+          MESSAGE=$(echo "$MESSAGE_RAW" | jq .)
 
           COMMENT=""
 
