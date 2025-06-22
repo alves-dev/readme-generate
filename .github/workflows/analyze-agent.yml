@@ -19,8 +19,8 @@ jobs:
         run: |
           git fetch origin ${{ github.base_ref }}
 
-          AFTER_SHA=$(git rev-parse HEAD)
-          BEFORE_SHA=$(git rev-parse HEAD~1)
+          BEFORE_SHA=$(git rev-parse HEAD~2)
+          AFTER_SHA=$(git rev-parse HEAD~1)
 
           echo "Comparando $BEFORE_SHA -> $AFTER_SHA"
 
