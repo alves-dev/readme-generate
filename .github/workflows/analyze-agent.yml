@@ -185,8 +185,11 @@ jobs:
           echo "🔍 Mensagem bruta recebida:"
           echo "$MESSAGE_RAW"
           
-          # Transforma a string JSON em JSON real
-          MESSAGE=$(echo "$MESSAGE_RAW" | jq -r 'fromjson')
+          # Remove aspas externas
+          CLEAN=$(echo "$MESSAGE_RAW" | sed 's/^"//;s/"$//')
+
+          # Faz parse do JSON interno
+          MESSAGE=$(echo "$CLEAN" | jq -R 'fromjson')
 
           if [ -z "$MESSAGE" ]; then
             echo "❌ Erro: resposta do agente não é JSON válido."
