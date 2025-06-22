@@ -7,7 +7,6 @@ on:
 
 jobs:
   create-pr:
-    if: github.actor != 'readme-generate'
     runs-on: ubuntu-latest
 
     steps:
