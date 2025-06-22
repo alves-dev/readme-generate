@@ -163,7 +163,7 @@ jobs:
               \"user_prompt\": $PROMPT,
               \"stackspot_knowledge\": false,
               \"return_ks_in_response\": true
-            }")
+              }")
 
           echo "Resposta do agente:"
           echo "$RESPONSE"
