@@ -9,8 +9,6 @@ detail:
   website:
   topics: &topics
     - python
-    - outro
-    - delete
 head:
   version: v1
   title: *project_title
