@@ -1,0 +1,123 @@
+name: Analyze PR with AI Agent
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  analyze-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Precisa do histórico para o diff funcionar corretamente
+
+      - name: Generate Diff JSON
+        id: diff
+        run: |
+          git fetch origin ${{ github.base_ref }}
+
+          BEFORE_SHA=$(git merge-base origin/${{ github.base_ref }} HEAD)
+          AFTER_SHA=$(git rev-parse HEAD)
+
+          echo "Comparando $BEFORE_SHA -> $AFTER_SHA"
+
+          CONTEXT_LINES=5
+
+          JSON="{"
+          JSON+="\"files\": ["
+
+          FILES=$(git diff --name-only $BEFORE_SHA $AFTER_SHA)
+
+          FIRST_FILE=true
+
+          for FILE in $FILES
+          do
+            if [ -f "$FILE" ]; then
+
+              HUNKS=$(git diff -U0 $BEFORE_SHA $AFTER_SHA -- "$FILE" | grep '^@@')
+
+              RANGES=()
+
+              while IFS= read -r hunk
+              do
+                RANGE=$(echo "$hunk" | grep -oE '\+[0-9]+(,[0-9]+)?' | sed 's/+//')
+
+                if [[ "$RANGE" == *","* ]]; then
+                  START=$(echo $RANGE | cut -d',' -f1)
+                  COUNT=$(echo $RANGE | cut -d',' -f2)
+                else
+                  START=$RANGE
+                  COUNT=1
+                fi
+
+                END=$((START + COUNT - 1))
+                CTX_START=$((START - CONTEXT_LINES))
+                CTX_END=$((END + CONTEXT_LINES))
+
+                if [ "$CTX_START" -lt 1 ]; then
+                  CTX_START=1
+                fi
+
+                RANGES+=("$CTX_START-$CTX_END")
+
+              done <<< "$HUNKS"
+
+              SORTED=$(printf '%s\n' "${RANGES[@]}" | sort -n -t'-' -k1)
+
+              MERGED=()
+              for range in $SORTED
+              do
+                start=$(echo $range | cut -d'-' -f1)
+                end=$(echo $range | cut -d'-' -f2)
+
+                if [ ${#MERGED[@]} -eq 0 ]; then
+                  MERGED+=("$start-$end")
+                else
+                  last_range=${MERGED[-1]}
+                  last_start=$(echo $last_range | cut -d'-' -f1)
+                  last_end=$(echo $last_range | cut -d'-' -f2)
+
+                  if [ "$start" -le $((last_end + 1)) ]; then
+                    new_end=$((end > last_end ? end : last_end))
+                    MERGED[-1]="$last_start-$new_end"
+                  else
+                    MERGED+=("$start-$end")
+                  fi
+                fi
+              done
+
+              if [ "$FIRST_FILE" = false ]; then
+                JSON+=","
+              fi
+              FIRST_FILE=false
+
+              JSON+="{\"file\": \"$FILE\", \"blocks\": ["
+
+              FIRST_BLOCK=true
+
+              for range in "${MERGED[@]}"
+              do
+                start=$(echo $range | cut -d'-' -f1)
+                end=$(echo $range | cut -d'-' -f2)
+
+                CODE=$(sed -n "${start},${end}p" "$FILE" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
+
+                if [ "$FIRST_BLOCK" = false ]; then
+                  JSON+=","
+                fi
+                FIRST_BLOCK=false
+
+                JSON+="{\"start_line\": $start, \"end_line\": $end, \"code\": \"$CODE\"}"
+              done
+
+              JSON+="]}"
+            fi
+          done
+
+          JSON+="]}"
+
+          echo "payload=$JSON" >> $GITHUB_OUTPUT
+          echo "$JSON" | jq .

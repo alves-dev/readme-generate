@@ -28,7 +28,7 @@ def main():
     license_ok = license.update_license(repo)
     print(f'LICENSE updated: {license_ok}')
 
-    commit = repo.commit_and_push('New readme generated')
+    commit = repo.commit_and_push('New readme generated [skip actions]')
     print(f'README.md updated: {commit}')
 
 
