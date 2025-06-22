@@ -166,7 +166,7 @@ jobs:
           echo "Resposta do agente:"
           echo "$RESPONSE"
 
-          MESSAGE=$(echo "$RESPONSE" | jq -r '.message' | sed 's/^"//;s/"$//')
+          MESSAGE=$(echo "$RESPONSE" | jq -r '.message' | sed 's/^```//;s/```<span class="math-inline">//' \| sed '/^</span>/d')
 
           if [ "$MESSAGE" == "null" ] || [ -z "$MESSAGE" ]; then
             echo "❌ Nenhuma sugestão encontrada na resposta."
