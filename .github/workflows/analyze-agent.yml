@@ -174,7 +174,8 @@ jobs:
             echo "❌ Nenhuma sugestão encontrada na resposta."
             exit 0
           fi
-
+          
+          MESSAGE=$(echo "$RESPONSE" | jq -r '.message' | sed 's/^"//;s/"$//')
           echo "message=$MESSAGE" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
