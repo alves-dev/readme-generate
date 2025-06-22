@@ -182,8 +182,11 @@ jobs:
         run: |
           MESSAGE_RAW='${{ steps.ai_agent.outputs.message }}'
           
-          # Remove aspas externas e faz parse
-          MESSAGE=$(echo "$MESSAGE_RAW" | sed 's/^"//;s/"$//' | jq -R 'fromjson')
+          echo "🔍 Mensagem bruta recebida:"
+          echo "$MESSAGE_RAW"
+          
+          # Transforma a string JSON em JSON real
+          MESSAGE=$(echo "$MESSAGE_RAW" | jq -r 'fromjson')
 
           if [ -z "$MESSAGE" ]; then
             echo "❌ Erro: resposta do agente não é JSON válido."
