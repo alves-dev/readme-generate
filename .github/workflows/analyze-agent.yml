@@ -136,6 +136,8 @@ jobs:
           if [ "$TOKEN" == "null" ] || [ -z "$TOKEN" ]; then
             echo "❌ Falha ao obter token"
             exit 1
+          else
+            echo "token obtido com sucesso"
           fi
 
           echo "::add-mask::$TOKEN"  # 🔥 Esconde o token no log
@@ -144,7 +146,7 @@ jobs:
       - name: Call AI Agent
         id: ai_agent
         run: |
-          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser uma lista em json valido no seguinte formato: \n [{ \"identification\": \"{file-block}\", \"suggestion\": \"{suggestion}\"}]"
+          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser uma lista em json valido no seguinte formato: \n [{ \"identification\": \"{file-block}\", \"suggestion\": \"{suggestion}\"}] \n json: \n"
 
           PAYLOAD_JSON='${{ steps.diff.outputs.payload }}'
 
