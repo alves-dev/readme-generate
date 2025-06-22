@@ -183,13 +183,13 @@ jobs:
           MESSAGE_RAW='${{ steps.ai_agent.outputs.message }}'
           
           # Verifica se é JSON válido antes de prosseguir
-          if ! echo "$MESSAGE_RAW" | jq -r | jq . >/dev/null 2>&1; then
+          if ! echo "$MESSAGE_RAW" | jq -r | jq -r '. | fromjson' >/dev/null 2>&1; then
             echo "❌ Erro: resposta do agente não é JSON válido."
             exit 1
           fi
 
           # Desserializa a string JSON em objeto JSON
-          MESSAGE=$(echo "$MESSAGE_RAW" | jq -r | jq .)
+          MESSAGE=$(echo "$MESSAGE_RAW" | jq -r | jq -r '. | fromjson')
 
           COMMENT=""
 
