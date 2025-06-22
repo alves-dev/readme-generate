@@ -146,7 +146,7 @@ jobs:
       - name: Call AI Agent
         id: ai_agent
         run: |
-          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser um markdown formato destacando o nome do arquivo ao qual o ponto se refere. \n json: \n"
+          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser um markdown formato destacando o nome do arquivo ao qual o ponto se refere, não precisa indicar que é um markdown com ```. \n json: \n"
 
           PAYLOAD_JSON='${{ steps.diff.outputs.payload }}'
 
@@ -168,14 +168,13 @@ jobs:
           echo "Resposta do agente:"
           echo "$RESPONSE"
 
-          MESSAGE=$(echo "$RESPONSE" | jq -c '.message')
+          MESSAGE=$(echo "$RESPONSE" | jq -r '.message' | sed 's/^"//;s/"$//')
 
           if [ "$MESSAGE" == "null" ] || [ -z "$MESSAGE" ]; then
             echo "❌ Nenhuma sugestão encontrada na resposta."
             exit 0
           fi
           
-          MESSAGE=$(echo "$RESPONSE" | jq -r '.message' | sed 's/^"//;s/"$//')
           echo "message=$MESSAGE" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
