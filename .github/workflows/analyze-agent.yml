@@ -121,3 +121,94 @@ jobs:
 
           echo "payload=$JSON" >> $GITHUB_OUTPUT
           echo "$JSON" | jq .
+
+      - name: Get JWT Token
+        id: get_token
+        run: |
+          RESPONSE=$(curl -s "https://idm.stackspot.com/${{ secrets.STACKSPOT_REALM }}/oidc/oauth/token" \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            -d 'grant_type=client_credentials' \
+            -d "client_id=${{ secrets.STACKSPOT_CLIENT_ID }}" \
+            -d "client_secret=${{ secrets.STACKSPOT_CLIENT_KEY }}")
+
+          TOKEN=$(echo $RESPONSE | jq -r '.access_token')
+
+          if [ "$TOKEN" == "null" ] || [ -z "$TOKEN" ]; then
+            echo "❌ Falha ao obter token"
+            exit 1
+          fi
+
+          echo "::add-mask::$TOKEN"  # 🔥 Esconde o token no log
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Call AI Agent
+        id: ai_agent
+        run: |
+          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser uma lista em json valido no seguinte formato: \n [{ \"identification\": \"{file-block}\", \"suggestion\": \"{suggestion}\"}]"
+
+          PAYLOAD_JSON='${{ steps.diff.outputs.payload }}'
+
+          # Monta o prompt completo, escapando as quebras de linha e aspas
+          PROMPT=$(echo "$PROMPT_TEXT $PAYLOAD_JSON" | jq -Rs .)
+
+          echo "Prompt montado: $PROMPT"
+
+          RESPONSE=$(curl -s "https://genai-inference-app.stackspot.com/v1/agent/${{ secrets.STACKSPOT_AGENT }}/chat" \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer ${{ steps.get_token.outputs.token }}" \
+            --data "{
+              \"streaming\": false,
+              \"user_prompt\": $PROMPT,
+              \"stackspot_knowledge\": false,
+              \"return_ks_in_response\": true
+            }")
+
+          echo "Resposta do agente:"
+          echo "$RESPONSE"
+
+          MESSAGE=$(echo "$RESPONSE" | jq -c '.message')
+
+          if [ "$MESSAGE" == "null" ] || [ -z "$MESSAGE" ]; then
+            echo "❌ Nenhuma sugestão encontrada na resposta."
+            exit 0
+          fi
+
+          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          
+      - name: Format Comment
+        id: format_comment
+        run: |
+          MESSAGE=${{ steps.ai_agent.outputs.message }}
+
+          COMMENT=""
+
+          LEN=$(echo "$MESSAGE" | jq 'length')
+
+          if [ "$LEN" -eq 0 ]; then
+            COMMENT="✅ Nenhuma sugestão da IA. Código revisado com sucesso!"
+          else
+            for row in $(echo "${MESSAGE}" | jq -c '.[]'); do
+              IDENT=$(echo "$row" | jq -r '.identification')
+              SUGGESTION=$(echo "$row" | jq -r '.suggestion')
+
+              COMMENT+="### 🔧 Arquivo/Bloco: \`$IDENT\`\n"
+              COMMENT+="💡 **Sugestão:**\n"
+              COMMENT+="\n"
+              COMMENT+="\`\`\`\n$SUGGESTION\n\`\`\`\n\n"
+              COMMENT+="---\n\n"
+            done
+          fi
+
+          echo "comment<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🧠 **Sugestões da IA para este PR:**
+
+            ${{ steps.format_comment.outputs.comment }}
