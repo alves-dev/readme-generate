@@ -149,7 +149,7 @@ jobs:
           PAYLOAD_JSON='${{ steps.diff.outputs.payload }}'
 
           # Monta o prompt completo, escapando as quebras de linha e aspas
-          PROMPT=$(echo $PAYLOAD_JSON" | jq -Rs .)
+          PROMPT=$(printf %s\\n "$PAYLOAD_JSON" | jq -Rs .)
 
           echo "Prompt montado: $PROMPT"
 
