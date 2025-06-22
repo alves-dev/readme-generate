@@ -146,7 +146,7 @@ jobs:
       - name: Call AI Agent
         id: ai_agent
         run: |
-          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser uma lista em json valido no seguinte formato: \n [{ \"identification\": \"{file-block}\", \"suggestion\": \"{suggestion}\"}] \n json: \n"
+          PROMPT_TEXT="voce esta recebendo um json que contém partes de código, funções podem estar pela metade, analise e me retorne no maximo 3 breves pontos de melhorias ou sugestões, tente limitar ao maxímo 100 caracteres para cada ponto, então seja direto e objetivo, o retorno deve ser um markdown formato destacando o nome do arquivo ao qual o ponto se refere. \n json: \n"
 
           PAYLOAD_JSON='${{ steps.diff.outputs.payload }}'
 
@@ -176,48 +176,6 @@ jobs:
           fi
 
           echo "message=$MESSAGE" >> $GITHUB_OUTPUT
-          
-      - name: Format Comment
-        id: format_comment
-        run: |
-          MESSAGE_RAW='${{ steps.ai_agent.outputs.message }}'
-          
-          echo "🔍 Mensagem bruta recebida:"
-          echo "$MESSAGE_RAW"
-          
-          # Remove aspas externas
-          CLEAN=$(echo "$MESSAGE_RAW" | sed 's/^"//;s/"$//')
-
-          # Faz parse do JSON interno
-          MESSAGE=$(echo "$CLEAN" | jq -R 'fromjson')
-
-          if [ -z "$MESSAGE" ]; then
-            echo "❌ Erro: resposta do agente não é JSON válido."
-            exit 1
-          fi
-
-          COMMENT=""
-
-          LEN=$(echo "$MESSAGE" | jq 'length')
-
-          if [ "$LEN" -eq 0 ]; then
-            COMMENT="✅ Nenhuma sugestão da IA. Código revisado com sucesso!"
-          else
-            for row in $(echo "${MESSAGE}" | jq -c '.[]'); do
-              IDENT=$(echo "$row" | jq -r '.identification')
-              SUGGESTION=$(echo "$row" | jq -r '.suggestion')
-
-              COMMENT+="### 🔧 Arquivo/Bloco: \`$IDENT\`\n"
-              COMMENT+="💡 **Sugestão:**\n"
-              COMMENT+="\n"
-              COMMENT+="\`\`\`\n$SUGGESTION\n\`\`\`\n\n"
-              COMMENT+="---\n\n"
-            done
-          fi
-
-          echo "comment<<EOF" >> $GITHUB_OUTPUT
-          echo "$COMMENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
         uses: peter-evans/create-or-update-comment@v4
@@ -227,4 +185,4 @@ jobs:
           body: |
             🧠 **Sugestões da IA para este PR:**
 
-            ${{ steps.format_comment.outputs.comment }}
+            ${{ steps.ai_agent.outputs.message }}
