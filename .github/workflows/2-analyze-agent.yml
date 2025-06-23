@@ -25,6 +25,7 @@ jobs:
           AFTER_SHA=$(git rev-parse HEAD)
 
           echo "Comparando $BEFORE_SHA -> $AFTER_SHA"
+          echo "🔍 Comparando $(git rev-parse --short $BEFORE_SHA) -> $(git rev-parse --short $AFTER_SHA)"
 
           CONTEXT_LINES=5
 
