@@ -1,17 +1,49 @@
-name: DEV - Create PR to main
+name: DEV - Create PR from develop to main
 
 on:
   push:
     branches:
-      - developxx
+      - develop
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # MUITO IMPORTANTE: Garante o histórico completo
+
+      - name: Fetch all branches (for explicit comparison)
+        run: |
+          git fetch origin main # Garante que 'main' está atualizada localmente na Action runner
+
+      - name: Verify Branch Status (Debug)
+        run: |
+          echo "Status of local develop branch in Action runner:"
+          git status
+
+          echo "Commits in develop not in main:"
+          git log origin/develop --not origin/main --oneline
+
+          echo "Commits in main not in develop:"
+          git log origin/main --not origin/develop --oneline
+
+          echo "Difference between develop and main:"
+          git diff origin/main origin/develop
+
+          # Tentativa de verificar se há diferenças que o create-pull-request poderia ignorar
+          # O create-pull-request verifica se o merge de develop em main resultaria em mudanças.
+          git checkout -b temp-merge-check main
+          if git merge-base --is-ancestor origin/develop temp-merge-check; then
+            echo "Develop is an ancestor of main (or they are the same)."
+          elif git merge-base --is-ancestor temp-merge-check origin/develop; then
+            echo "Main is an ancestor of develop (main is behind develop)."
+          else
+            echo "Branches have diverged and have no common ancestor in one direction (needs merge)."
+          fi
+          git branch -D temp-merge-check # Limpa a branch temporária
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
