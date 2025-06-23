@@ -17,8 +17,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
           base: main
-          head: develop
           title: 'Merge develop into main'
           body: 'Pull request automático para atualizar a branch main com as mudanças da develop.'
           draft: false
