@@ -2,7 +2,12 @@ name: Analyze PR with AI Agent
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   analyze-pr:
