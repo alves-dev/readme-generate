@@ -18,7 +18,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: feature
-          base: develoṕ
+          base: develop
           title: 'Merge feature into develoṕ'
           body: 'Pull request automático para atualizar a branch develoṕ com as mudanças da feature.'
           draft: false
