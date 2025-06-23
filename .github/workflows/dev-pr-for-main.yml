@@ -10,61 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # fetch-depth: 0 é bom para o histórico, mas não garante que todas as refs de branch estejam disponíveis para operações de checkout/comparação
-          # sem um fetch explícito para as outras branches.
-          # A melhor abordagem para este cenário é garantir que o fetch-depth: 0 está lá,
-          # e que as referências de todas as branches estejam disponíveis para a máquina local.
-          # O default do actions/checkout@v4 com fetch-depth: 0 deveria buscar todas as refs.
-          # O erro sugere que 'main' não está sendo reconhecida como uma referência.
-          # Vamos tentar fetch-all.
-
-          fetch-depth: 0 # Clona todo o histórico
-          # ref: ${{ github.event.pull_request.head.ref || github.ref }} # Não necessário para push, mas útil para PRs.
-          # token: ${{ secrets.GITHUB_TOKEN }} # Default, mas pode ser explicitado se houver problemas de permissão.
-
-      # Esta etapa deve ser suficiente para garantir que a 'main' remota esteja acessível.
-      # O erro "main is not a commit" é muito específico e aponta para a ausência da referência 'main'.
-      # Isso acontece se a branch 'main' não existe, ou se ela não foi totalmente baixada/configurada.
-      - name: Ensure Main Branch is Fetched and Available
-        run: |
-          git remote update origin --prune # Atualiza todas as referências remotas do 'origin'
-          git branch -r # Lista as branches remotas para depuração
-          git show-ref # Mostra todas as referências para depuração
-          git branch -a # Mostra todas as branches, locais e remotas
-          # Tente verificar a existência de origin/main
-          git rev-parse --verify origin/main
-        # Se o erro persistir, o nome da branch 'main' pode estar incorreto, ou ela não existe.
-
-      - name: Verify Branch Status (Debug)
-        run: |
-          echo "Status of local develop branch in Action runner:"
-          git status
-
-          echo "Commits in develop not in main:"
-          git log origin/develop --not origin/main --oneline
-
-          echo "Commits in main not in develop:"
-          git log origin/main --not origin/develop --oneline
-
-          echo "Difference between develop and main:"
-          git diff origin/main origin/develop
-
-          # A parte do merge-base estava causando o erro.
-          # Se 'main' não é um commit, as operações baseadas nela falharão.
-          # Removendo a parte que tenta 'git checkout -b temp-merge-check main'
-          # pois o erro indica que 'main' não é uma ref válida para 'checkout'.
-          # Se as verificações acima (git log e git diff) mostram diferenças,
-          # o create-pull-request DEVERIA funcionar se 'main' fosse uma ref válida.
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: develop
-          base: main
-          title: 'Merge develop into main'
-          body: 'Pull request automático para atualizar a branch main com as mudanças da develop.'
+          branch: feature
+          base: develoṕ
+          title: 'Merge feature into develoṕ'
+          body: 'Pull request automático para atualizar a branch develoṕ com as mudanças da feature.'
           draft: false
