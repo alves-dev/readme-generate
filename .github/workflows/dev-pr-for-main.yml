@@ -3,7 +3,7 @@ name: DEV - Create PR to main
 on:
   push:
     branches:
-      - develop
+      - developxx
 
 jobs:
   create-pr:
