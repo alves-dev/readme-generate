@@ -19,11 +19,6 @@ jobs:
       - name: Generate Diff JSON
         id: diff
         run: |
-#          git fetch origin ${{ github.base_ref }}
-
-#          BEFORE_SHA=$(git rev-parse HEAD~1)
-#          AFTER_SHA=$(git rev-parse HEAD)
-
           AFTER_SHA=${{ github.event.pull_request.head.sha }}
           BEFORE_SHA=$(git rev-parse ${AFTER_SHA}^)
                
