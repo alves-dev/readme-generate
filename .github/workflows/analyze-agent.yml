@@ -179,11 +179,33 @@ jobs:
           echo "$MESSAGE" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Get PR Info
+        uses: actions/github-script@v7
+        id: pr
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              head: `${context.repo.owner}:develop`,
+              base: "main"
+            });
+
+            if (prs.data.length === 0) {
+              core.setFailed("❌ Nenhum PR encontrado de develop para main.");
+            } else {
+              const pr = prs.data[0];
+              console.log(`PR encontrado: #${pr.number}`);
+              core.setOutput('pr_number', pr.number);
+            }
+
       - name: Comment on PR
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr.outputs.pr_number }}
           body: |
             🧠 **Sugestões da IA para este PR:**
 
