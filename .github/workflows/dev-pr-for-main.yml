@@ -23,6 +23,5 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          branch: production-promotion
           title: 'Merge feature into develoṕ'
           body: 'Pull request automático para atualizar a branch develoṕ com as mudanças da feature.'
