@@ -10,8 +10,6 @@ detail:
   topics: &topics
     - python
     - new-topic
-    - ia
-    - outro
 head:
   version: v1
   title: *project_title

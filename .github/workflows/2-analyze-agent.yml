@@ -1,8 +1,8 @@
-name: DEV - Analyze PR with AI
+name: "[DEV] AI Code Review on PR"
 
 on:
   workflow_run:
-    workflows: ["DEV - Create PR from develop to main"]
+    workflows: ["[DEV] PR Sync Develop → Main"]
     types:
       - completed
 

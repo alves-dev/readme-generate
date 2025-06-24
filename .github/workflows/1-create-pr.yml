@@ -1,4 +1,4 @@
-name: DEV - Create PR from develop to main
+name: "[DEV] PR Sync Develop → Main"
 
 on:
   push:
