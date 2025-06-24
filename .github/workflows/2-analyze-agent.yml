@@ -21,23 +21,9 @@ jobs:
         run: |
           git fetch origin develop
           git checkout develop
-
-    
-          # logs
-          
-          git status
-          echo "github.event: ${{ github.event }}"
-          
-          
-          AFTER_SHA=${{ github.event.pull_request.head.sha }}
-
-          # 🚩 Verifica se tem commit anterior
-          if git rev-parse ${AFTER_SHA}^ >/dev/null 2>&1; then
-            BEFORE_SHA=$(git rev-parse ${AFTER_SHA}^)
-          else
-            echo "⚠️ Commit anterior não encontrado. Usando BASE do PR como comparação."
-            BEFORE_SHA=${{ github.event.pull_request.base.sha }}
-          fi
+      
+          BEFORE_SHA=$(git rev-parse HEAD~1)
+          AFTER_SHA=$(git rev-parse HEAD)
                
           echo "🔍 Comparando:"
           echo "$(git log -1 --pretty=format:"%h - %s" $BEFORE_SHA)"
