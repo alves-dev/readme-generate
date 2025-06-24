@@ -20,6 +20,12 @@ jobs:
       - name: Generate Diff JSON
         id: diff
         run: |
+          # logs
+          
+          git status
+          echo "github.event.pull_request.head.ref: ${{ github.event.pull_request.head.ref }}"
+          
+          
           AFTER_SHA=${{ github.event.pull_request.head.sha }}
 
           # 🚩 Verifica se tem commit anterior
