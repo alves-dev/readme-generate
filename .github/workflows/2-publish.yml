@@ -1,4 +1,4 @@
-name: MAIN - publish image
+name: PROD - publish image
 
 on:
   push:

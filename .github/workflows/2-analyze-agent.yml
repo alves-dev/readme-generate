@@ -30,9 +30,9 @@ jobs:
           fi
                
           echo "🔍 Comparando:"
-          echo "$(git log -1 --pretty=format:"%h - %s" bb2101c0321e2f9ec1c76148a888a672aebd562e)"
+          echo "$(git log -1 --pretty=format:"%h - %s" $BEFORE_SHA)"
           echo "   ↓"
-          echo "$(git log -1 --pretty=format:"%h - %s" 5a82c60e9f7bc44c12684868d485aa24fa207571)"
+          echo "$(git log -1 --pretty=format:"%h - %s" AFTER_SHA)"
 
           CONTEXT_LINES=5
 
