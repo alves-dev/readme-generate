@@ -19,10 +19,20 @@ jobs:
       - name: Generate Diff JSON
         id: diff
         run: |
-          AFTER_SHA=$(git rev-parse --short HEAD)
-          BEFORE_SHA=$(git rev-parse --short HEAD~1)
+          AFTER_SHA=${{ github.event.pull_request.head.sha }}
+
+          # 🚩 Verifica se tem commit anterior
+          if git rev-parse ${AFTER_SHA}^ >/dev/null 2>&1; then
+            BEFORE_SHA=$(git rev-parse ${AFTER_SHA}^)
+          else
+            echo "⚠️ Commit anterior não encontrado. Usando BASE do PR como comparação."
+            BEFORE_SHA=${{ github.event.pull_request.base.sha }}
+          fi
                
-          echo "🔍 Comparando $(git rev-parse --short $BEFORE_SHA) -> $(git rev-parse --short $AFTER_SHA)"
+          echo "🔍 Comparando:"
+          echo "$(git log -1 --pretty=format:"%h - %s" bb2101c0321e2f9ec1c76148a888a672aebd562e)"
+          echo "   ↓"
+          echo "$(git log -1 --pretty=format:"%h - %s" 5a82c60e9f7bc44c12684868d485aa24fa207571)"
 
           CONTEXT_LINES=5
 
