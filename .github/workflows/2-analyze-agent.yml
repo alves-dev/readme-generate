@@ -32,7 +32,7 @@ jobs:
           echo "🔍 Comparando:"
           echo "$(git log -1 --pretty=format:"%h - %s" $BEFORE_SHA)"
           echo "   ↓"
-          echo "$(git log -1 --pretty=format:"%h - %s" AFTER_SHA)"
+          echo "$(git log -1 --pretty=format:"%h - %s" $AFTER_SHA)"
 
           CONTEXT_LINES=5
 
@@ -215,6 +215,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ steps.pr.outputs.pr_number }}
           body: |
-            🧠 **Sugestões da IA para este PR:**
-
             ${{ steps.ai_agent.outputs.message }}
