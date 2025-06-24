@@ -1,4 +1,4 @@
-name: PROD - publish image
+name: "[PROD] Publish Docker Image"
 
 on:
   push:
