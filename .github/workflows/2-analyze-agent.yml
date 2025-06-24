@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Precisa do histórico para o diff funcionar corretamente
+          ref: ${{ github.event.pull_request.head.ref }} # 🔥 Faz checkout na branch do PR
 
       - name: Generate Diff JSON
         id: diff
