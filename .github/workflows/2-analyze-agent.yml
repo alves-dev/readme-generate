@@ -19,8 +19,8 @@ jobs:
       - name: Generate Diff JSON
         id: diff
         run: |
-          AFTER_SHA=${{ github.event.pull_request.head.sha }}
-          BEFORE_SHA=$(git rev-parse ${AFTER_SHA}^)
+          AFTER_SHA=$(git rev-parse --short HEAD)
+          BEFORE_SHA=$(git rev-parse --short HEAD~1)
                
           echo "🔍 Comparando $(git rev-parse --short $BEFORE_SHA) -> $(git rev-parse --short $AFTER_SHA)"
 
