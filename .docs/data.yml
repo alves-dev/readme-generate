@@ -9,6 +9,7 @@ detail:
   website:
   topics: &topics
     - python
+    - new-topic
 head:
   version: v1
   title: *project_title
