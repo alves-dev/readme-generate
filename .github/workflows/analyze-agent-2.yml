@@ -6,7 +6,7 @@ on:
 
 jobs:
   tasks:
-    uses: alves-dev/actions/.github/workflows/analize-agent.yml@develop
+    uses: alves-dev/actions/.github/workflows/analyze-agent.yml@develop
     secrets:
       STACKSPOT_REALM: ${{ secrets.STACKSPOT_REALM }}
       STACKSPOT_CLIENT_ID: ${{ secrets.STACKSPOT_CLIENT_ID }}
