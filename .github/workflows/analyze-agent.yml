@@ -4,12 +4,6 @@ on:
   push:
     branches: develop
 
-#on:
-#  workflow_run:
-#    workflows: ["[DEV] PR Sync Develop → Main"]
-#    types:
-#      - completed
-
 jobs:
   analyze-pr:
     runs-on: ubuntu-latest
