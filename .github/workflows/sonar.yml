@@ -1,0 +1,13 @@
+name: "[DEV] Sonar Scanner"
+
+on:
+  push:
+    branches: develop
+
+jobs:
+  tasks:
+    uses: alves-dev/actions/.github/workflows/sonar.yml@latest
+    with:
+      repo-name: ${{ github.event.repository.name }}
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -1,0 +1,14 @@
+name: "[DEV] AI Code Review on PR"
+
+on:
+  push:
+    branches: develop
+
+jobs:
+  tasks:
+    uses: alves-dev/actions/.github/workflows/analyze-agent.yml@latest
+    secrets:
+      STACKSPOT_REALM: ${{ secrets.STACKSPOT_REALM }}
+      STACKSPOT_CLIENT_ID: ${{ secrets.STACKSPOT_CLIENT_ID }}
+      STACKSPOT_CLIENT_KEY: ${{ secrets.STACKSPOT_CLIENT_KEY }}
+      STACKSPOT_AGENT: ${{ secrets.STACKSPOT_AGENT }}
