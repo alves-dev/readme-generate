@@ -1,0 +1,11 @@
+name: "[DEV] AI Code Review on PR 2"
+
+on:
+  push:
+    branches: develop
+
+jobs:
+  tasks:
+    uses: alves-dev/actions/analize-agent.yml@develop
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
