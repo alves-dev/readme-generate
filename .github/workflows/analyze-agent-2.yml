@@ -6,6 +6,9 @@ on:
 
 jobs:
   tasks:
-    uses: alves-dev/actions/analize-agent.yml@develop
+    uses: alves-dev/actions/.github/workflows/analize-agent.yml@develop
     secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      STACKSPOT_REALM: ${{ secrets.STACKSPOT_REALM }}
+      STACKSPOT_CLIENT_ID: ${{ secrets.STACKSPOT_CLIENT_ID }}
+      STACKSPOT_CLIENT_KEY: ${{ secrets.STACKSPOT_CLIENT_KEY }}
+      STACKSPOT_AGENT: ${{ secrets.STACKSPOT_AGENT }}
