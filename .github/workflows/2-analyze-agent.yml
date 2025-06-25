@@ -1,10 +1,14 @@
 name: "[DEV] AI Code Review on PR"
 
 on:
-  workflow_run:
-    workflows: ["[DEV] PR Sync Develop → Main"]
-    types:
-      - completed
+  push:
+    branches: develop
+
+#on:
+#  workflow_run:
+#    workflows: ["[DEV] PR Sync Develop → Main"]
+#    types:
+#      - completed
 
 jobs:
   analyze-pr:
