@@ -1,5 +1,5 @@
 <!--
-template_name=head
+template_name=head-default
 template_version=v1
 -->
 

@@ -1,16 +1,15 @@
-from pathlib import Path
-
 import requests
-import yaml
 
 from app.github.client import GitRepository
+from app.utils import folder_files as files
+from app.utils import repo_data
 
 GITHUB_API = 'https://api.github.com'
 
 
 def update_license(repo: GitRepository) -> bool:
-    data = _load_metadata(repo.repo_path)
-    license_key = data['project']['license']
+    data = files.load_repository_metadata(repo.repo_path)
+    license_key = repo_data.get_license(data)
     license_text = _get_standard_license(license_key)
 
     if license_text is None:
@@ -49,9 +48,3 @@ def _get_standard_license(license_key: str) -> str | None:
         return data.get("body")
 
     return None
-
-
-def _load_metadata(path: Path) -> dict:
-    metadata_path = path.joinpath('.docs', "data.yml")
-    with open(metadata_path, "r") as f:
-        return yaml.safe_load(f)
