@@ -1,19 +1,21 @@
-from pathlib import Path
-
 import requests
-import yaml
 
 from app.config.setting import setting
 from app.github.client import GitRepository
+from app.utils import folder_files as files
+from app.utils import repo_data
 
 GITHUB_API = 'https://api.github.com'
 
 
 def update_repo_metadata(repo: GitRepository) -> bool:
-    data = _load_metadata(repo.repo_path)
+    data = files.load_repository_metadata(repo.repo_path)
 
-    topics_ok = _update_topics(repo.repo_full_name, data['detail']['topics'])
-    metadata_ok = _update_detail_metadata(repo.repo_full_name, data['detail']['description'], data['detail']['website'])
+    description = repo_data.get_description(data)
+    website = data.get('repository', {}).get('website', '')
+
+    topics_ok = _update_topics(repo.repo_full_name, repo_data.get_topics(data))
+    metadata_ok = _update_detail_metadata(repo.repo_full_name, description, website)
 
     return topics_ok and metadata_ok
 
@@ -60,9 +62,3 @@ def _update_detail_metadata(repo: str, description: str = "", homepage: str = ""
 
     response = requests.patch(url, headers=headers, json=data)
     return response.status_code == 200
-
-
-def _load_metadata(path: Path) -> dict:
-    metadata_path = path.joinpath('.docs', "data.yml")
-    with open(metadata_path, "r") as f:
-        return yaml.safe_load(f)

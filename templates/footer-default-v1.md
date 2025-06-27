@@ -1,5 +1,5 @@
 <!--
-template_name=footer
+template_name=footer-default
 template_version=v1
 -->
 
