@@ -10,6 +10,10 @@ template_version=v1
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/status-${status}-blue.svg" alt="status">
+</p>
+
+<p align="center">
 ${topics_tags_badges}
 </p>
 
