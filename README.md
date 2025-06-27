@@ -1,5 +1,5 @@
 <!--
-template_name=head
+template_name=head-code
 template_version=v1
 -->
 
@@ -10,13 +10,12 @@ template_version=v1
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-Em desenvolvimento-blue.svg" alt="status">
-</p>
-
-<p align="center">
 <img src="https://img.shields.io/badge/topics:-grey"> 
 <img src="https://img.shields.io/badge/python-lightgrey">
-<img src="https://img.shields.io/badge/new%20topic-lightgrey">
+<img src="https://img.shields.io/badge/http-lightgrey">
+<img src="https://img.shields.io/badge/docker-lightgrey">
+<img src="https://img.shields.io/badge/git-lightgrey">
+<img src="https://img.shields.io/badge/github-lightgrey">
 </p>
 
 <hr>
@@ -24,10 +23,11 @@ template_version=v1
 
 
 ## Atualmente uso as seguintes templates
- - [head v1](../templates/head-v1.md)
- - [footer v1](../templates/footer-v1.md)
+ - [head default v1](templates/head-default-v1.md)
+ - [head code v1](templates/head-code-v1.md)
+ - [footer default v1](templates/footer-default-v1.md)
 <!--
-template_name=footer
+template_name=footer-default
 template_version=v1
 -->
 
@@ -36,4 +36,4 @@ template_version=v1
    <img src="https://img.shields.io/badge/licença-GPL%203-blue.svg" alt="license">
 </p>
 
-**Atualizado em:** 2025-06-25 13:57
+**Atualizado em:** 2025-06-27 08:39
