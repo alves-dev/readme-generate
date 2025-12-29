@@ -10,15 +10,18 @@ BASE_PATH_TEMPLATES = str(Path(__file__).parent.parent.parent.resolve()) + '/tem
 
 def full_readme(path: Path) -> str:
     """
-    Gera e retorna o README completo
-    :param path:
-    :return:
+    Gera e retorna o README completo a partir do README.base.md e dos templates.
     """
-    head = _generate_head(path)
-    extra = files.load_extra_md(path)
+
+    base = files.load_base_md(path)
+
+    header = _generate_head(path)
     footer = _generate_footer(path)
 
-    return f'{head}\n{extra}\n{footer}'
+    base = base.replace('<!-- TEMPLATE:header -->', header)
+    base = base.replace('<!-- TEMPLATE:footer -->', footer)
+
+    return base
 
 
 def _generate_head(path: Path) -> str:
@@ -33,17 +36,9 @@ def _generate_head(path: Path) -> str:
     if 'code' == repo_type:
         template_name = 'code'
 
-    head_template: str = f"{BASE_PATH_TEMPLATES}/head-{template_name}-{head_version}.md"
+    head_template: str = f"{BASE_PATH_TEMPLATES}/header-{template_name}-{head_version}.md"
 
-    if head_data['topics'] is not None:
-        tags_badges = '\n'.join(
-            f'<img src="https://img.shields.io/badge/{_format_tag(tag)}-lightgrey">' for tag in head_data['topics']
-        )
-
-        tags_badges = '<img src="https://img.shields.io/badge/topics:-grey"> \n' + tags_badges
-        head_data['topics_tags_badges'] = tags_badges
-    else:
-        head_data['topics_tags_badges'] = ''
+    head_data['topics_tags_badges'] = _build_topics_badges(head_data['topics'])
 
     return _render_template(head_template, head_data)
 
@@ -92,3 +87,19 @@ def _footer_data(metadata: dict) -> dict:
     }
 
     return data
+
+
+def _build_topics_badges(topics: list[str]) -> str:
+    if not topics:
+        return ""
+
+    badges = " ".join(
+        f'<img src="https://img.shields.io/badge/{_format_tag(tag)}-1E293B?style=flat-square&logoColor=white"/>'
+        for tag in topics
+    )
+
+    header = (
+        '<img src="https://img.shields.io/badge/topics-10B981?style=flat-square&logoColor=white"/>'
+    )
+
+    return f'{header} {badges}'
