@@ -1,9 +1,11 @@
+import logging
 from pathlib import Path
 
 import yaml
 
 FOLDER_DOCS = '.docs'
-FILE_YML = 'repository.yml'
+FILE_YML = '.repo.yml'
+BASE_MD = 'README.base.md'
 _repository_cache = {}  # cache simples em memória
 
 
@@ -19,16 +21,21 @@ def check_files(path: Path):
     """
     docs_dir = path / FOLDER_DOCS
     data_file = path / FILE_YML
+    readme_base = docs_dir / BASE_MD
 
     if not docs_dir.is_dir():
-        print("Repository doesn't have .docs")
+        logging.error('Repository does not have .docs directory')
         exit()
 
     if not data_file.is_file():
-        print(f"Repository doesn't have {FILE_YML}")
+        logging.error(f'Repository does not have {FILE_YML} file')
         exit()
 
-    print("All files or folders found")
+    if not readme_base.is_file():
+        logging.error(f'Repository does not have {BASE_MD} file')
+        exit()
+
+    logging.info("All files or folders found")
 
 
 def load_repository_metadata(path: Path) -> dict:
@@ -44,8 +51,8 @@ def load_repository_metadata(path: Path) -> dict:
     return data
 
 
-def load_extra_md(path: Path) -> str:
-    extra = path.joinpath(FOLDER_DOCS, "extra.md")
+def load_base_md(path: Path) -> str:
+    extra = path.joinpath(FOLDER_DOCS, BASE_MD)
     try:
         with open(extra, "r") as f:
             content = f.read()

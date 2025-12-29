@@ -1,3 +1,4 @@
+import logging
 import shutil
 from pathlib import Path
 
@@ -32,7 +33,7 @@ class GitRepository:
             self.repo.git.push("--set-upstream", self.repo_url_with_token, 'main')
             return True
         except Exception as e:
-            print(f"Erro ao fazer commit/push: {e}")
+            logging.error(e)
             return False
 
     def __clone_repo(self) -> Repo:
