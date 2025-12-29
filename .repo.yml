@@ -1,0 +1,25 @@
+schema: v1
+
+repository:
+  title: Readme Generate
+  description:
+    Script python que gera README padrão para meus repositórios de acordo com templates
+  license: GPL-3
+  type: code
+  topics:
+    - readme
+    - automation
+    - python
+  website:
+
+project:
+  status: development
+  stack:
+    language: python
+    framework:
+    database:
+    protocols:
+      - git
+    tools:
+      - github
+      - docker
