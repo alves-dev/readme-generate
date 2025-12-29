@@ -26,9 +26,12 @@ template_version=v1
 
 
 ## Atualmente uso as seguintes templates
- - [head default v1](templates/head-default-v1.md)
- - [head code v1](templates/head-code-v1.md)
+ - [Header default v1](templates/header-default-v1.md)
+ - [Header code v1](templates/header-code-v1.md)
  - [footer default v1](templates/footer-default-v1.md)
+
+### Exemplo de header code v1
+![header-example.png](.docs/header-example.png)
 
 <!--
 template_name=footer-default
@@ -60,6 +63,6 @@ template_version=v1
 
 <p align="center">
   <sub style="color:#94A3B8;">
-    Atualizado em 2025-12-29 08:50
+    Atualizado em 2025-12-29 08:58
   </sub>
 </p>
