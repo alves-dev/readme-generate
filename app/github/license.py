@@ -28,7 +28,7 @@ def _get_standard_license(license_key: str) -> str | None:
     :return: Texto da licença ou None se não encontrar
     """
 
-    if license_key == 'NOT-LICENSE':
+    if license_key == 'NO-LICENSE':
         return None
 
     my_keys = {
