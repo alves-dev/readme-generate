@@ -10,7 +10,7 @@ repository:
     - readme
     - automation
     - python
-  website:
+  website: https://github.com/alves-dev/readme-generate
 
 project:
   status: development

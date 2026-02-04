@@ -3,6 +3,8 @@ template_name=footer-default
 template_version=v1
 -->
 
+---
+
 <p align="center">
   <img src="https://img.shields.io/badge/licença-${license}-3B82F6.svg" alt="license"/>
 </p>
