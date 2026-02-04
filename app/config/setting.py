@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     GITHUB_BASE_CLONE_URL: str = 'https://github.com'
     GITHUB_TOKEN: str | None = None
 
+    COMMIT_PUSH: bool = True
+
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
