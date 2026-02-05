@@ -12,5 +12,6 @@
 ### Footer v1
 ![footer-exemple.png](.docs/footer-exemple.png)
 
+<!-- TEMPLATE:stack -->
 
 <!-- TEMPLATE:footer -->
