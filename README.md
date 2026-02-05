@@ -34,14 +34,18 @@ template_version=v1
 ## Atualmente uso as seguintes templates
  - [Header default v1](templates/header-default-v1.md)
  - [Header code v1](templates/header-code-v1.md)
+ - [Stack default v1](templates/stack-default-v1.md)
  - [footer default v1](templates/footer-default-v1.md)
 
 ## Exemplos
 ### Header code v1
 ![header-example.png](.docs/header-example.png)
 
+### Stack v1
+![stack-example.png](.docs/stack-example.png)
+
 ### Footer v1
-![footer-exemple.png](.docs/footer-exemple.png)
+![footer-example.png](.docs/footer-example.png)
 
 <!--
 template_name=stack-default
@@ -100,6 +104,6 @@ template_version=v1
 
 <p align="center">
   <sub style="color:#94A3B8;">
-    Atualizado em 2026-02-05 19:07
+    Atualizado em 2026-02-05 19:17
   </sub>
 </p>
