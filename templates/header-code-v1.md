@@ -18,8 +18,14 @@ template_version=v1
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-${status}-10B981?style=flat-square"/>
+  <img src="https://img.shields.io/badge/status-${status}-${status_color}?style=flat-square"/>
 </p>
 
-<hr/>
+<p align="center" style="margin-top: 4px;">
+  <span style="color:${status_color}; font-size:13px;">
+    ${status_description}
+  </span>
+</p>
 
+
+<hr/>

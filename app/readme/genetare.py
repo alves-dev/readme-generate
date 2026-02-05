@@ -69,6 +69,29 @@ def _render_template(template_path, context) -> str:
 
 
 def _head_data(metadata: dict) -> dict:
+    status_description = {
+        'development': {
+            'emoji': '🛠️',
+            'text': 'Actively worked on. New features may come and things can change.',
+            'color': '10B981'
+        },
+        'maintenance': {
+            'emoji': '🔧',
+            'text': 'No new features planned. Bugs and small fixes only.',
+            'color': '38BDF8'
+        },
+        'deprecated': {
+            'emoji': '⚠️',
+            'text': 'Still works, but no longer developed and may be removed in the future.',
+            'color': 'F59E0B'
+        },
+        'archived': {
+            'emoji': '🪦',
+            'text': 'Abandoned project. Not maintained and kept only for reference.',
+            'color': '64748B'
+        }
+    }
+
     data = {
         'title': metadata.get('repository', {}).get('title', '...'),
         'description': repo_data.get_description(metadata),
@@ -77,6 +100,15 @@ def _head_data(metadata: dict) -> dict:
 
     if 'code' == repo_data.get_type(metadata):
         data['status'] = metadata.get('project', {}).get('status', '...')
+
+        status_info = status_description.get(data['status'], {
+            'emoji': '❔',
+            'text': 'Unknown status.',
+            'color': '94A3B8'
+        })
+
+        data['status_description'] = f"{status_info['emoji']} {status_info['text']}"
+        data['status_color'] = status_info['color']
 
     return data
 
