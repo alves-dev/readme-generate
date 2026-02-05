@@ -14,15 +14,21 @@ template_version=v1
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/topics-10B981?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/readme-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/automation-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/python-1E293B?style=flat-square&logoColor=white"/>
+  <img src="https://img.shields.io/badge/topics-10B981?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/readme-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/automation-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/python-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/git-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/github-1E293B?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/docker-1E293B?style=flat-square&logoColor=white"/>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/status-development-10B981?style=flat-square"/>
 </p>
 
-<hr/>
+<p align="center" style="margin-top: 4px;">
+  <span style="color:10B981; font-size:13px;">
+    🛠️ Actively worked on. New features may come and things can change.
+  </span>
+</p>
 
+
+<hr/>
 
 
 ## Atualmente uso as seguintes templates
@@ -37,7 +43,30 @@ template_version=v1
 ### Footer v1
 ![footer-exemple.png](.docs/footer-exemple.png)
 
-<!-- TEMPLATE:stack -->
+<!--
+template_name=stack-default
+template_version=v1
+-->
+
+<div align="center">
+
+<div align="center">
+
+<h2>⚙️ Tech Stack</h2>
+
+<img src="https://img.shields.io/badge/Language-10B981?style=flat-square&logoColor=white"/><img src="https://img.shields.io/badge/python-3B82F6?style=flat-square"/>
+<img src="https://img.shields.io/badge/Framework-10B981?style=flat-square&logoColor=white"/><img src="https://img.shields.io/badge/no%20framework-64748B?style=flat-square"/>
+
+---
+
+**💾 Database** · **🔌 Protocols** · **🛠️ Tools**  
+<sub>Persistence layer</sub> · <sub>Communication layer</sub> · <sub>Infrastructure & tooling</sub>
+
+<img src="https://img.shields.io/badge/no%20database-64748B?style=flat-square"/> <img src="https://img.shields.io/badge/git-6366F1?style=flat-square"/> <img src="https://img.shields.io/badge/github-0EA5E9?style=flat-square"/> <img src="https://img.shields.io/badge/docker-0EA5E9?style=flat-square"/> <img src="https://img.shields.io/badge/git-0EA5E9?style=flat-square"/>
+
+</div>
+
+</div>
 
 <!--
 template_name=footer-default
@@ -71,6 +100,6 @@ template_version=v1
 
 <p align="center">
   <sub style="color:#94A3B8;">
-    Atualizado em 2026-02-05 18:48
+    Atualizado em 2026-02-05 19:07
   </sub>
 </p>
