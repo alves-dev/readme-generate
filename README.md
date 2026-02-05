@@ -37,6 +37,7 @@ template_version=v1
 ### Footer v1
 ![footer-exemple.png](.docs/footer-exemple.png)
 
+<!-- TEMPLATE:stack -->
 
 <!--
 template_name=footer-default
@@ -70,6 +71,6 @@ template_version=v1
 
 <p align="center">
   <sub style="color:#94A3B8;">
-    Atualizado em 2026-02-04 20:09
+    Atualizado em 2026-02-05 18:48
   </sub>
 </p>
